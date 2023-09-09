@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -169,6 +170,7 @@ func generateASCIIArt(text string, banner string) string {
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Disposition", "attachment; filename=ascii-art.txt")
+	w.Header().Set("Content-Length", strconv.Itoa(len(ascii_art_to_download)))
 	w.Header().Set("Content-Type", "text/plain")
 	w.Write([]byte(ascii_art_to_download))
 }
