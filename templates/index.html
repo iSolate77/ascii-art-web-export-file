@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ASCII Art Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/templates/dist/output.css" />
+  <style>
+    .overflow-auto:hover {
+      background-color: #b0b0b0;
+    }
+  </style>
+</head>
+
+<body class="bg-cyan-300 flex flex-col justify-between min-h-screen">
+  <header class="bg-gradient-to-r from-teal-500 to-white p-5 flex items-center">
+    <img src="/templates/assets/Reboot-Logo.png" alt="ASCII Art Generator" class="h-10 mr-auto" />
+    <h1 class="text-4xl"><a href="/">ASCII Art Generator</a></h1>
+    <span class="text-xl ml-auto">Menu</span>
+  </header>
+  <main class="flex-1 flex flex-col justify-center items-center px-6 py-8">
+    <h2 class="text-2xl text-center mb-8">Generate ASCII Art</h2>
+    <form method="post" action="/ascii-art" class="flex flex-col items-center mb-8">
+      <label for="text" class="mb-2">Enter text:</label>
+      <textarea rows="4" cols="50" type="text" name="text" id="text" required class="mb-4 p-2 border rounded-md"
+        placeholder="Enter up to 100 characters"></textarea>
+      <label for="banner" class="mb-2">Select banner:</label>
+      <select name="banner" id="banner" required class="mb-4 p-2 border rounded-md">
+        <option value="standard">Standard</option>
+        <option value="shadow">Shadow</option>
+        <option value="thinkertoy">Thinkertoy</option>
+        <option value="internalServerError">Secret (Error 500)</option>
+      </select>
+      <label for="colorPicker" class="mb-2">Choose a color for ASCII Art:</label>
+      <input type="color" id="colorPicker" value="#000000" class="mb-4" />
+      <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md">
+        Generate
+      </button>
+      <button id="downloadBtn" class="px-6 py-2 bg-cyan-500 text-white rounded-md">Download ASCII Art</button>
+    </form>
+    {{if .Result}}
+    <h2 class="text-2xl text-center mb-8">ASCII Art Output: (if you are trying to be a stickler and chose a colour that
+      you can't see with a white background. Hover over the box)</h2>
+    <div class="overflow-auto border rounded-md p-2 bg-white w-full" id="asciiOutput">
+      <pre>{{.Result}}</pre>
+    </div>
+    {{end}}
+  </main>
+  <footer class="bg-teal-500 text-center text-white p-4">
+    <p>&copy; 2023 Meow Company</p>
+  </footer>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function () {
+      var color = document.getElementById('colorPicker').value
+      localStorage.setItem('selectedColor', color)
+    })
+    window.onload = function () {
+      var savedColor = localStorage.getItem('selectedColor')
+      if (savedColor) {
+        document.querySelector('pre').style.color = savedColor
+      }
+    }
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+      window.location.href = '/download-ascii';
+    });
+  </script>
+</body>
+
+</html>
